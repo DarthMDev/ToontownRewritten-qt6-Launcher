@@ -13,6 +13,7 @@ from urllib.parse import urlencode
 import os
 
 import http.client as httplib
+DEVMODE = settings.devmode
 class TTRLauncher(FSM):
     """
     This is the "main" class that powers the Toontown Rewritten launcher. It manages
@@ -228,10 +229,19 @@ class TTRLauncher(FSM):
             game = subprocess.Popen('TTREngine', creationflags=134217728)
         elif sys.platform == 'darwin':
             # open "Toontown Rewritten"
-            modes = os.stat('Toontown Rewritten').st_mode
-            if not modes & stat.S_IXUSR:
-                os.chmod('Toontown Rewritten', modes | stat.S_IXUSR)
-            game = subprocess.Popen(['./Toontown Rewritten'])
+            if not DEVMODE:
+                # on mac if we aren't in dev mode, we need to use application support folder
+                path = os.path.join(os.path.expanduser("~"), "Library", "Application Support", "Toontown Rewritten")
+                modes = os.stat(path + "/" + 'Toontown Rewritten').st_mode
+                if not modes & stat.S_IXUSR:
+                    os.chmod('Toontown Rewritten', modes | stat.S_IXUSR)
+            
+            
+                game = subprocess.Popen([path + "/" + 'Toontown Rewritten'])
+            else:
+                # use the current directory
+                modes = os.stat('Toontown Rewritten').st_mode
+                game = subprocess.Popen(['./Toontown Rewritten'])
         elif sys.platform in ['linux2', 'linux']:
             modes = os.stat('TTREngine').st_mode
             if not modes & stat.S_IXUSR:

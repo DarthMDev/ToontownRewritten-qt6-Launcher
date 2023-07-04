@@ -2,15 +2,15 @@ import json, sys, os
 from urllib.request import urlopen
 from urllib.parse import urlencode
 import requests
-
+import settings
 #Some nice constants
 MIRRORLIST = "https://www.toontownrewritten.com/api/mirrors"
 MANIFEST_URL = "https://cdn.toontownrewritten.com/content/patchmanifest.txt"
-
+DEVMODE = settings.devmode
 from patcher.ManagedFile import ManagedFile
 PATCHER_BASE = os.environ.get('PATCHER_BASE', './')
-# on mac use app support folder
-if sys.platform == 'darwin':
+# on mac use app support folder if we are not in dev mode
+if not DEVMODE and sys.platform == 'darwin':
     PATCHER_BASE = os.path.join(os.environ.get('HOME'), 'Library', 'Application Support', 'Toontown Rewritten')
 
 print('Obtaining available mirrors...')

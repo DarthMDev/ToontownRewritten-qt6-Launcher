@@ -6,3 +6,4 @@ DefaultJSONLauncherInfo = 'https://download.toontownrewritten.com/launcher/windo
 DefaultDownloadLocation = 'https://www.toontownrewritten.com/'
 SSLConnection = ('www.toontownrewritten.com', 443)
 LoginPostLocation = '/api/login?format=json'
+devmode = False 

@@ -87,6 +87,7 @@ foldersToRemove = [
     f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/plugins/multimedia",
     # we dont need qml
     f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/qml",
+
 ]
     
 for folder in foldersToRemove:
