@@ -3,7 +3,7 @@
 **Toontown Rewritten Launcher Reengineering** is a reengineering of the Toontown Rewritten Source Code found inside of the [TTR Flatpak](https://www.xytime.xyz/flatpaks/ttr/index.html). Not trying to do anything malicious here the entire launcher is owned by Toontown Rewritten Team just found it interesting they didnt compile it for the flatpak.
 
 ## 📝 Note to TTR Staff
-If anyone from the TTR Team is reading this and wants this taken down please DM me on Discord at Nora#2878 to request for me to take it down.
+If anyone from the TTR Team is reading this and wants this taken down please DM me on Discord at  darthanonymous1  to request for me to take it down.
 
 ## 🗝 Built and managed with 
 * [Python](https://www.python.org/) - Coding Language
@@ -19,3 +19,8 @@ If anyone from the TTR Team is reading this and wants this taken down please DM 
 
 ## 🎓 License
 This project code is derived by Toontown Rewritten's Launcher - see the [LICENSE](LICENSE.md) file for details
+
+# notice for users :
+
+This is an unofficial launcher and I am not affiliated with Toontown Rewritten, all assets are owned by TTR , except my modified code and additions.
+Please note: This launcher has a remember me feature, this is stored in plaintext , I am not responsible if you lose your account. If you are worried  feel free  to enable toonstep / 2 factor authentication as it will help protect your account.
