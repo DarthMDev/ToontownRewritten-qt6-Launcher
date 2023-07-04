@@ -1,7 +1,7 @@
 from PyQt6.QtCore import QUrl, QTimer, Qt
 from PyQt6 import QtCore
 from PyQt6.QtGui import QDesktopServices, QPixmap, QIcon, QMouseEvent
-from PyQt6.QtWidgets import QLabel, QMainWindow, QProgressBar, QLineEdit, QMessageBox, QInputDialog
+from PyQt6.QtWidgets import QLabel, QMainWindow, QProgressBar, QLineEdit, QMessageBox, QInputDialog, QCheckBox
 
 #No web engine support yet
 from PyQt6.QtWebEngineCore import QWebEngineSettings, QWebEnginePage, QWebEngineProfile
@@ -98,6 +98,21 @@ class LauncherPanel(QLabel):
         self.pbox.resize(214, 29)
         self.pbox.setStyleSheet(LINEEDIT_CSS)
         self.pbox.setEchoMode(QLineEdit.EchoMode.Password)
+        # remember me checkbox
+        self.rememberMeCheckBox = QCheckBox(self)
+        # move it under the password box, next to the go button
+        self.rememberMeCheckBox.move(565, 395)
+        self.rememberMeLabel = QLabel(self)
+        self.rememberMeLabel.move(585, 395)
+        self.rememberMeLabel.setText(self.tr("Remember Me"))
+        # if the rememberme.txt file exists, set the checkbox to checked
+        if os.path.isfile("rememberme.txt"):
+            self.rememberMeCheckBox.setCheckState(Qt.CheckState.Checked)
+            # if the file doesn't exist, set the checkbox to unchecked
+        else:
+            self.rememberMeCheckBox.setCheckState(Qt.CheckState.Unchecked)
+        # now set the remember me checkbox to a function that will save the username and password
+        self.rememberMeCheckBox.stateChanged.connect(self.rememberMe)
         self.goButton = GoButton(self)
         self.goButton.move(747, 345)
         self.dragging = False
@@ -124,20 +139,20 @@ class LauncherPanel(QLabel):
         return
 
     def mousePressEvent(self, event):
-        if event.button() != Qt.LeftButton:
+        if event.button() != QtCore.Qt.MouseButton.LeftButton:
             return
-        self.lastMousePos = event.globalPos()
+        self.lastMousePos = event.globalPosition()
         self.dragging = True
 
     def mouseMoveEvent(self, event):
         if self.dragging:
-            mousePos = event.globalPos()
+            mousePos = event.globalPosition()
             mouseDelta = mousePos - self.lastMousePos
-            self.parentWidget().move(self.parentWidget().pos() + mouseDelta)
+            self.parentWidget().move(self.parentWidget().pos() + mouseDelta.toPoint())
             self.lastMousePos = mousePos
 
     def mouseReleaseEvent(self, event):
-        if event.button() != Qt.LeftButton:
+        if event.button() != QtCore.Qt.MouseButton.LeftButton:
             return
         self.dragging = False
 
@@ -242,6 +257,47 @@ class LauncherPanel(QLabel):
             traceback.print_tb(trace, None, f)
         self.input.put((messagetypes.LAUNCHER_ERROR, localizer.ERR_UnknownTraceback, True))
         return
+    
+    def rememberMe(self, state):
+        # add to settings to remember the user
+    
+
+        if state == Qt.CheckState.Checked:
+            # save the username and password to a text file in the same directory as the launcher
+            # encrypt the password
+            # save the username and encrypted password to the file
+            # also this will check on launch if the file exists and if it does, it will load the username and password into the boxes
+            # if the file doesn't exist, it will create it
+            password = self.pbox.text()
+            # encrypt the password
+            password = base64.b64encode(password.encode("utf-8"))
+           # check if the file exists
+            if os.path.isfile("rememberme.txt"):
+               # if it does, open it and read the username and password
+                with open("rememberme.txt", "r") as f:
+                     # read the lines
+                     lines = f.readlines()
+                     # set the username and password to the lines
+                     username = lines[0].strip()
+                     password = lines[1].strip()
+                     # decrypt the password
+                     password = base64.b64decode(password).decode("utf-8")
+                     # set the username and password to the boxes
+                     self.ubox.setText(username)
+                     self.pbox.setText(password)
+   
+            else:
+                # if it doesn't, create it and write the username and password to it
+                with open("rememberme.txt", "w") as f:
+                     f.write(self.ubox.text() + "\n")
+                     f.write(str(password))
+        elif state == Qt.CheckState.Unchecked:
+            # if the checkbox is unchecked, delete the file
+            if os.path.isfile("rememberme.txt"):
+                os.remove("rememberme.txt")
+           
+                
+                
 
 
 class LauncherFrame(QMainWindow):

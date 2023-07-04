@@ -226,7 +226,13 @@ class TTRLauncher(FSM):
         os.environ['TTR_GAMESERVER'] = self.gameserver
         if sys.platform == 'win32':
             game = subprocess.Popen('TTREngine', creationflags=134217728)
-        else:
+        elif sys.platform == 'darwin':
+            # open "Toontown Rewritten"
+            modes = os.stat('Toontown Rewritten').st_mode
+            if not modes & stat.S_IXUSR:
+                os.chmod('Toontown Rewritten', modes | stat.S_IXUSR)
+            game = subprocess.Popen(['./Toontown Rewritten'])
+        elif sys.platform in ['linux2', 'linux']:
             modes = os.stat('TTREngine').st_mode
             if not modes & stat.S_IXUSR:
                 os.chmod('TTREngine', modes | stat.S_IXUSR)

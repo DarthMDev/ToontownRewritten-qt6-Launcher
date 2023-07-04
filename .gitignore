@@ -2,9 +2,14 @@ bin/
 build/
 dist/
 venv/
+street-signs/
+logs
+allowlist/
 __pycache__/
 .DS_Store
 crash.txt
 *.mf
 Toontown Rewritten
 TTRGame.vlt
+settings.json
+
