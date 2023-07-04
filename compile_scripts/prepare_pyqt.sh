@@ -3,7 +3,7 @@
 # this script is used to prepare PyQt6 for compilation
 
 # Download PyQt6 wheels and unpack them
-python3 -m pip download --only-binary=:all: --platform=macosx_13_0 PyQt6_Qt6
+python3 -m pip download --only-binary=:all: --platform=macosx_13_0_x86_64 PyQt6_Qt6
 python3 -m pip download --only-binary=:all: --platform=macosx_13_0_arm64 PyQt6_Qt6
 python3 -m wheel unpack PyQt6_*arm64*.whl -d PyQt6_arm64
 python3 -m wheel unpack PyQt6_*x86_64*.whl -d PyQt6_x86_64
@@ -15,7 +15,7 @@ merge_frameworks() {
   # $1 is the path to the binary
   binary_path="${1##universal/}"
   # lipo together the x86_64 and arm64 versions of the binary
-  lipo -create -arch x86_64 "x86_64/$binary_path" "arm64/$binary_path" -output "universal/$binary_path"
+  lipo -create -arch x86_64 "PyQt6_x86_64/$binary_path" "PyQt6_arm64/$binary_path" -output "universal/$binary_path"
 }
 export -f merge_frameworks
 

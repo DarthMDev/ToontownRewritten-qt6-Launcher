@@ -1,0 +1,82 @@
+name: "Build Toontown Rewritten Qt6 Launcher "
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    name: "Build Toontown Rewritten Qt6 Launcher"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        python-version: [3.9]
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.9
+    # Mac Build
+    - name: "Build MacOS"
+      if: matrix.os == 'macos-latest'
+      run: |
+        cd compile_scripts &&
+        bash compile-mac-universal2.sh && 
+        cd .. &&
+        cd dist &&
+        ln -s /Applications "Applications" &&
+        # create the dmg
+        hdiutil create -fs HFS+ -srcfolder . -volname "Toontown Rewritten Custom Launcher" "Toontown Rewritten Custom Launcher.dmg" &&
+        zip -r "Toontown Rewritten Custom Launcher-Mac.zip" "Toontown Rewritten Custom Launcher.app/"
+              
+    - name : "Upload Mac Build"
+      if: matrix.os == 'macos-latest'
+      uses: actions/upload-artifact@v2
+      with:
+        name: TTR-Mac
+        path: |
+          ${{ github.workspace }}/dist/Toontown Rewritten Custom Launcher.dmg
+          ${{ github.workspace }}/dist/Toontown Rewritten Custom Launcher-Mac.zip
+
+
+    # Windows Build
+    - name: "Build Windows"
+      if: matrix.os == 'windows-latest'
+      run: |
+        python3 -m pip install -r requirements.txt pyinstaller pillow  && # install requirements
+        cd compile_scripts &&
+        # run compile.bat
+        ./compile.bat
+
+    - name : "Upload Windows Build"
+      if: matrix.os == 'windows-latest'
+      uses: actions/upload-artifact@v2
+      with:
+        name: TTR-Windows
+        path: |
+          ${{ github.workspace }}/dist/Toontown Rewritten Custom Launcher.exe
+
+
+
+    # Linux Build
+    - name: "Build Linux"
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        cd compile_scripts &&
+        bash compile-linux.sh &&
+        cd .. && 
+        cd dist &&
+        zip -r "Toontown Rewritten Custom Launcher-Linux.zip" "Toontown Rewritten Custom Launcher"
+
+    - name : "Upload Linux Build"
+      if: matrix.os == 'ubuntu-latest'
+      uses: actions/upload-artifact@v2
+      with:
+        name: TTR-Linux
+        path: |
+         
+          ${{ github.workspace }}/dist/Toontown Rewritten Custom Launcher-Linux.zip
+    

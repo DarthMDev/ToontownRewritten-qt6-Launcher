@@ -1,8 +1,5 @@
 @echo off
 cd ..
-rmdir bin /s /q
-pyinstaller --onefile main.py
+pyinstaller --onefile main.py --clean --noconsole --add-data "resources/*.png;resources/" -n "Toontown Rewritten Custom Launcher.exe" -i "eyes.icns"
 rmdir build /s /q
-REN dist bin
-XCOPY /E /I resources bin\resources\
-PAUSE
+
