@@ -9,6 +9,9 @@ MANIFEST_URL = "https://cdn.toontownrewritten.com/content/patchmanifest.txt"
 
 from patcher.ManagedFile import ManagedFile
 PATCHER_BASE = os.environ.get('PATCHER_BASE', './')
+# on mac use app support folder
+if sys.platform == 'darwin':
+    PATCHER_BASE = os.path.join(os.environ.get('HOME'), 'Library', 'Application Support', 'Toontown Rewritten')
 
 print('Obtaining available mirrors...')
 

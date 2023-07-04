@@ -1,4 +1,5 @@
 @echo off
+cd ..
 rmdir bin /s /q
 pyinstaller --onefile main.py
 rmdir build /s /q
