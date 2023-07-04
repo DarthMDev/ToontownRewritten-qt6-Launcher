@@ -245,7 +245,6 @@ class TTRLauncher(FSM):
             os.system("/app/bin/wmclass") #Sets the WM_CLASS of Toontown Rewritten so that DE can show icon
 
         if game.returncode == 0:
-            self.sendOutput(messagetypes.LAUNCHER_CLEAR_PASSWORD)
             self.sendOutput(messagetypes.LAUNCHER_SHOW)
             self.sendOutput(messagetypes.LAUNCHER_ENABLE_CONTROLS)
             self.credentials = None

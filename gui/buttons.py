@@ -94,5 +94,11 @@ class GoButton(ImageButton):
     def Clicked(self):
         credentials = (
          self.parent.ubox.text(), self.parent.pbox.text())
+        isRemembered = self.parent.rememberMeCheckBox.isChecked()
+        if isRemembered:
+            self.parent.saveCredentials()
+        else:
+            # delete the credentials
+            self.parent.deleteCredentials()
         self.parent.output.put(credentials, block=True, timeout=1.0)
         self.parent.SetLoginControlsEditable(False)

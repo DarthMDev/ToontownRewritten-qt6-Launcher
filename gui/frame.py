@@ -105,14 +105,11 @@ class LauncherPanel(QLabel):
         self.rememberMeLabel = QLabel(self)
         self.rememberMeLabel.move(585, 395)
         self.rememberMeLabel.setText(self.tr("Remember Me"))
-        # if the rememberme.txt file exists, set the checkbox to checked
-        if os.path.isfile("rememberme.txt"):
-            self.rememberMeCheckBox.setCheckState(Qt.CheckState.Checked)
-            # if the file doesn't exist, set the checkbox to unchecked
-        else:
-            self.rememberMeCheckBox.setCheckState(Qt.CheckState.Unchecked)
         # now set the remember me checkbox to a function that will save the username and password
+
         self.rememberMeCheckBox.stateChanged.connect(self.rememberMe)
+        self.loadCredentials()
+        
         self.goButton = GoButton(self)
         self.goButton.move(747, 345)
         self.dragging = False
@@ -238,6 +235,13 @@ class LauncherPanel(QLabel):
         return
 
     def OnEnterPressed(self):
+        # check if the remember me checkbox is checked
+        if self.rememberMeCheckBox.isChecked():
+            # if it is, save the username and password to the file
+            with open("./rememberme.txt", "w") as f:
+                f.write(self.ubox.text() + "\n")
+                f.write(self.pbox.text())
+            
         self.goButton.Clicked()
 
     def SetLoginControlsEditable(self, areEditable):
@@ -258,45 +262,39 @@ class LauncherPanel(QLabel):
         self.input.put((messagetypes.LAUNCHER_ERROR, localizer.ERR_UnknownTraceback, True))
         return
     
-    def rememberMe(self, state):
-        # add to settings to remember the user
-    
+    def loadCredentials(self):
+        # if the file exists, load the username and password from the file
+        if os.path.isfile("./rememberme.txt"):
+            with open("./rememberme.txt", "r") as f:
+                self.ubox.setText(f.readline().strip())
+                self.pbox.setText(f.readline().strip())
+                self.rememberMeCheckBox.setChecked(True)
+        else:
+            self.rememberMeCheckBox.setChecked(False)
+            
+    def saveCredentials(self):
+        # save the username and password to the file
+        with open("./rememberme.txt", "w") as f:
+            f.write(self.ubox.text() + "\n")
+            f.write(self.pbox.text())
 
+    def deleteCredentials(self):
+        # delete the file
+        if os.path.isfile("./rememberme.txt"):
+            os.remove("./rememberme.txt")
+    
+    def rememberMe(self, state):
         if state == Qt.CheckState.Checked:
-            # save the username and password to a text file in the same directory as the launcher
-            # encrypt the password
-            # save the username and encrypted password to the file
-            # also this will check on launch if the file exists and if it does, it will load the username and password into the boxes
-            # if the file doesn't exist, it will create it
-            password = self.pbox.text()
-            # encrypt the password
-            password = base64.b64encode(password.encode("utf-8"))
-           # check if the file exists
-            if os.path.isfile("rememberme.txt"):
-               # if it does, open it and read the username and password
-                with open("rememberme.txt", "r") as f:
-                     # read the lines
-                     lines = f.readlines()
-                     # set the username and password to the lines
-                     username = lines[0].strip()
-                     password = lines[1].strip()
-                     # decrypt the password
-                     password = base64.b64decode(password).decode("utf-8")
-                     # set the username and password to the boxes
-                     self.ubox.setText(username)
-                     self.pbox.setText(password)
-   
-            else:
-                # if it doesn't, create it and write the username and password to it
-                with open("rememberme.txt", "w") as f:
-                     f.write(self.ubox.text() + "\n")
-                     f.write(str(password))
+            #if one of the boxes is empty, wait to save the username and password when the go button is clicked
+            if self.ubox.text() == "" or self.pbox.text() == "":
+                print('one of the boxes is empty')
+                return 
+            self.saveCredentials()
         elif state == Qt.CheckState.Unchecked:
-            # if the checkbox is unchecked, delete the file
-            if os.path.isfile("rememberme.txt"):
-                os.remove("rememberme.txt")
+            self.deleteCredentials()
            
                 
+        
                 
 
 
