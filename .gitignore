@@ -1,4 +1,10 @@
 bin/
 build/
 dist/
+venv/
 __pycache__/
+.DS_Store
+crash.txt
+*.mf
+Toontown Rewritten
+TTRGame.vlt

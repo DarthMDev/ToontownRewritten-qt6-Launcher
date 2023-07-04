@@ -12,7 +12,7 @@ If anyone from the TTR Team is reading this and wants this taken down please DM 
 * [certifi](https://pypi.org/project/certifi/) - Python package for providing Mozilla's CA Bundle.
 * [chardet](https://pypi.org/project/chardet/) - Universal encoding detector for Python 2 and 3
 * [pyOpenSSL](https://pypi.org/project/pyOpenSSL/) - Python wrapper module around the OpenSSL library
-* [PyQt5](https://pypi.org/project/PyQt5/) - Python bindings for the Qt cross platform application toolkit
+* [PyQt6](https://pypi.org/project/PyQt6/) - Python bindings for the Qt cross platform application toolkit
 * [PyQtWebEngine](https://pypi.org/project/PyQtWebEngine/) - Python bindings for the Qt WebEngine framework
 * [requests](https://pypi.org/project/requests/) - Python HTTP for Humans.
 * [urllib3](https://pypi.org/project/urllib3/) - HTTP library with thread-safe connection pooling, file post, and more.

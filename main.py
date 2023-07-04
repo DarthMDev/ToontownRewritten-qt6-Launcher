@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 from launcher import TTRLauncher
 from gui.frame import LauncherFrame
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtWidgets import QApplication
 import multiprocessing
 from launcher import localizer, messagetypes
 import traceback
@@ -36,4 +36,4 @@ if __name__ == '__main__': # Needed for multiprocessing to not fail horrifically
 
     app = QApplication(sys.argv)
     frame = LauncherFrame(localizer.GUI_WindowTitle, launcherToGui, guiToLauncher)
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

@@ -1,8 +1,12 @@
-from PyQt5.QtCore import QUrl, QTimer, Qt
-from PyQt5.QtGui import QDesktopServices, QPixmap, QIcon
-from PyQt5.QtWidgets import QLabel, QMainWindow, QProgressBar, QLineEdit, QMessageBox, QInputDialog
+from PyQt6.QtCore import QUrl, QTimer, Qt
+from PyQt6 import QtCore
+from PyQt6.QtGui import QDesktopServices, QPixmap, QIcon, QMouseEvent
+from PyQt6.QtWidgets import QLabel, QMainWindow, QProgressBar, QLineEdit, QMessageBox, QInputDialog
+
 #No web engine support yet
-from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage, QWebEngineSettings
+from PyQt6.QtWebEngineCore import QWebEngineSettings, QWebEnginePage, QWebEngineProfile
+from PyQt6.QtWebEngineWidgets import QWebEngineView
+import PyQt6.QtWebEngineCore
 from gui.buttons import *
 from launcher import messagetypes, localizer, settings
 import json, webbrowser, base64, sys, os, traceback
@@ -20,9 +24,9 @@ def resource_path(filename):
     return os.path.join(".", filename) #A default path
 
 #Hack to open in system browser
-class WebEnginePage(QWebEnginePage):
-    def acceptNavigationRequest(self, url,  _type, isMainFrame):
-        if _type == QWebEnginePage.NavigationTypeLinkClicked:
+class WebEnginePage(PyQt6.QtWebEngineCore.QWebEnginePage):
+    def acceptNavigationRequest(self, url, _type, isMainFrame): 
+        if _type == QWebEnginePage.NavigationType.NavigationTypeLinkClicked:
             QDesktopServices.openUrl(url)
             return False
         return True
@@ -30,10 +34,12 @@ class WebEnginePage(QWebEnginePage):
 class HtmlView(QWebEngineView):
     def __init__(self, *args, **kwargs):
         QWebEngineView.__init__(self, *args, **kwargs)
-        self.setPage(WebEnginePage(self))
-        s = QWebEngineSettings.globalSettings()
-        s.setAttribute(QWebEngineSettings.ShowScrollBars, False)
-
+        s = QWebEngineProfile.defaultProfile().settings()
+        self.setPage(QWebEnginePage(self))
+        # set show scrollbars to false
+        s.setAttribute(QWebEngineSettings.WebAttribute.ShowScrollBars, False)
+        
+        
 
 class LauncherPanel(QLabel):
     LAUNCHER_DATA_CHECK_INTERVAL = 100
@@ -57,10 +63,10 @@ class LauncherPanel(QLabel):
         self.news.move(67, 215)
         self.news.resize(300, 120)
         self.news.setUrl(QUrl('https://toontownrewritten.com/news/launcher'))
-        self.news.setAttribute(Qt.WA_TranslucentBackground)
+        self.news.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.news.setStyleSheet('background:transparent')
         page = self.news.page()
-        page.setBackgroundColor(Qt.transparent)
+        page.setBackgroundColor(Qt.GlobalColor.transparent)
         #TODO: Need to draw surlee in front of the qtwebengine
         #surlee = QPixmap(resource_path('resources/Surlee.png'))
         #self.surlee = QLabel(self)
@@ -73,7 +79,7 @@ class LauncherPanel(QLabel):
         self.label = QLabel(self)
         self.label.move(548, 140)
         self.label.resize(187, 75)
-        self.label.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.label.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
         self.label.mouseReleaseEvent = self.mouseReleaseEvent
         self.label.setStyleSheet(LABEL_CSS)
         self.label.setWordWrap(True)
@@ -91,7 +97,7 @@ class LauncherPanel(QLabel):
         self.pbox.move(515, 364)
         self.pbox.resize(214, 29)
         self.pbox.setStyleSheet(LINEEDIT_CSS)
-        self.pbox.setEchoMode(QLineEdit.Password)
+        self.pbox.setEchoMode(QLineEdit.EchoMode.Password)
         self.goButton = GoButton(self)
         self.goButton.move(747, 345)
         self.dragging = False
@@ -241,7 +247,7 @@ class LauncherPanel(QLabel):
 class LauncherFrame(QMainWindow):
 
     def __init__(self, title, input, output):
-        QMainWindow.__init__(self, parent=None, flags=Qt.FramelessWindowHint)
+        super().__init__()
         self.setWindowTitle(title)
         self.resize(900, 680)
         window_icon = QIcon()
@@ -250,13 +256,17 @@ class LauncherFrame(QMainWindow):
         #for icon_size in icons:
         #    window_icon.addFile(resource_path('resources/icons/watch-icon-%d' % icon_size))
         window_icon.addFile(resource_path('resources/icons/eyes'))
-        
+        # make it frameless
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+
         self.setWindowIcon(window_icon)
         self.setStyleSheet(LAUNCHER_CSS)
-        self.setAttribute(Qt.WA_TranslucentBackground)
-        self.setAttribute(Qt.WA_NoSystemBackground)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        self.setAttribute(Qt.WidgetAttribute.WA_NoSystemBackground)
         self.panel = LauncherPanel(self)
         self.panel.output = output
         self.panel.input = input
         self.show()
         return
+
+    
