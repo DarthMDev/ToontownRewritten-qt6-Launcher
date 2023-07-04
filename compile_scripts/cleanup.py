@@ -37,7 +37,7 @@ foldersToRemove = [
     # all the quick3d frameworks
     f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/lib/QtQuick3D.framework",
     f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/lib/QtQuick3DAssetImport.framework",
-    f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/lib/QtQuick3DAssetUtils.framework"
+    f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/lib/QtQuick3DAssetUtils.framework",
     f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/lib/QtQuick3DEffects.framework",
     f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/lib/QtQuick3DHelpers.framework",
     f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/lib/QtQuick3DIblBaker.framework",
@@ -57,8 +57,6 @@ foldersToRemove = [
     f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/lib/QtQuickTemplates2.framework",
     f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/lib/QtQuickTest.framework",
     f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/lib/QtQuickTimeline.framework",
-
-    f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/lib/QuickWidgets.framework",
     # remoteobjects
     f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/lib/QtRemoteObjects.framework",
     f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/lib/QtRemoteObjectsQml.framework",

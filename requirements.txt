@@ -3,7 +3,6 @@ certifi
 chardet
 pyinstaller
 pyOpenSSL
-PyQt6
-PyQt6-WebEngine
+
 requests
 urllib3
