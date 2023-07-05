@@ -1,4 +1,6 @@
 pipeline:
+  matrix:
+      - python_version: "3.11"
   build_toontown_rewritten_qt6_launcher:
     description: "Build Toontown Rewritten Qt6 Launcher"
     trigger:
@@ -11,8 +13,7 @@ pipeline:
         - macos-latest
         - ubuntu-latest
         - windows-latest
-  matrix:
-      - python_version: "3.11"
+  
     script:
       - checkout
       - setup_python:
