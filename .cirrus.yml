@@ -1,0 +1,64 @@
+pipeline:
+  build_toontown_rewritten_qt6_launcher:
+    description: "Build Toontown Rewritten Qt6 Launcher"
+    trigger:
+      events:
+        - push
+      branches:
+        - master
+    environment:
+      os:
+        - macos-latest
+        - ubuntu-latest
+        - windows-latest
+    matrix:
+      - python_version: "3.11"
+    script:
+      - checkout
+      - setup_python:
+          version: "${{ matrix.python_version }}"
+      - build_mac:
+          when:
+            branch: master
+            environment: macos-latest
+          script:
+            - |
+              cd compile_scripts &&
+              bash compile-mac-universal2.sh &&
+              cd .. &&
+              cd dist &&
+              ln -s /Applications "Applications" &&
+              hdiutil create -fs HFS+ -srcfolder . -volname "Toontown Rewritten Custom Launcher" "Toontown Rewritten Custom Launcher.dmg" &&
+          artifacts:
+            - name: TTR-Mac
+              paths:
+                - "${{ github.workspace }}/dist/Toontown Rewritten Custom Launcher.dmg"
+               
+      - build_windows:
+          when:
+            branch: master
+            environment: windows-latest
+          script:
+            - |
+              python3 -m pip install -r requirements.txt pyinstaller pillow &&
+              cd compile_scripts &&
+              ./compile.bat
+          artifacts:
+            - name: TTR-Windows
+              paths:
+                - "${{ github.workspace }}/dist/Toontown Rewritten Custom Launcher.exe"
+      - build_linux:
+          when:
+            branch: master
+            environment: ubuntu-latest
+          script:
+            - |
+              cd compile_scripts &&
+              bash compile-linux.sh &&
+              cd .. &&
+              cd dist &&
+              zip -r "Toontown Rewritten Custom Launcher-Linux.zip" "Toontown Rewritten Custom Launcher"
+          artifacts:
+            - name: TTR-Linux
+              paths:
+                - "${{ github.workspace }}/dist/Toontown Rewritten Custom Launcher-Linux.zip"
