@@ -81,11 +81,19 @@ foldersToRemove = [
     f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/lib/QtTextToSpeech.framework",
     # sql drivers we do not need
     f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/plugins/sqldrivers",
+    f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/plugins/assetimporters",
+    # renderers plugin
+    f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/plugins/renderers",
+    # sceneparsers plugin
+    f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/plugins/sceneparsers",
+    # tls
+    f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/plugins/tls",
     # multimedia plugins we do not need
     f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/plugins/multimedia",
     # we dont need qml
     f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/qml",
-
+    # remove translations 
+    f"./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python{sys.version_info.major}.{sys.version_info.minor}/PyQt6/Qt6/translations",
 ]
     
 for folder in foldersToRemove:

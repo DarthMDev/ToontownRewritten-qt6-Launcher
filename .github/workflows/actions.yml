@@ -27,10 +27,9 @@ jobs:
         bash compile-mac-universal2.sh && 
         cd .. &&
         cd dist &&
-        ln -s /Applications "Applications" &&
+        ln -s /Applications "Applications"
         # create the dmg
-        hdiutil create -fs HFS+ -srcfolder . -volname "Toontown Rewritten Custom Launcher" "Toontown Rewritten Custom Launcher.dmg" &&
-        zip -r "Toontown Rewritten Custom Launcher-Mac.zip" "Toontown Rewritten Custom Launcher.app/"
+        hdiutil create -fs HFS+ -srcfolder . -volname "Toontown Rewritten Custom Launcher" "Toontown Rewritten Custom Launcher.dmg"
               
     - name : "Upload Mac Build"
       if: matrix.os == 'macos-latest'
@@ -39,8 +38,6 @@ jobs:
         name: TTR-Mac
         path: |
           ${{ github.workspace }}/dist/Toontown Rewritten Custom Launcher.dmg
-          ${{ github.workspace }}/dist/Toontown Rewritten Custom Launcher-Mac.zip
-
 
     # Windows Build
     - name: "Build Windows"
