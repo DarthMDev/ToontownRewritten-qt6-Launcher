@@ -11,7 +11,7 @@ pipeline:
         - macos-latest
         - ubuntu-latest
         - windows-latest
-    matrix:
+  matrix:
       - python_version: "3.11"
     script:
       - checkout
