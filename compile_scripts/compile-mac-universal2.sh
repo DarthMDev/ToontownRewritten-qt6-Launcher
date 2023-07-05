@@ -8,12 +8,13 @@ python3 -m pip install bsdiff4-1.2.3-cp311-cp311-macosx_10_9_universal2.whl
 python3 -m pip install -r ../requirements.txt py2app
 ./prepare_pyqt.sh
 cd ..
-py2applet --make-setup main.py
-sed -i '' -e "s/)/    name='Toontown Rewritten Custom Launcher')/" setup.py
-python3 setup.py py2app -O2 --arch=universal2 --resources resources --iconfile eyes.icns
-cp -r compile_scripts/universal/PyQt6_*/PyQt6/Qt6/* "./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python$PYTHON_VERSION/PyQt6/Qt6/"
+pyinstaller  --onefile --clean --noconsole --noupx --add-data "resources/*.png:resources/" --icon=eyes.icns --name="Toontown Rewritten Custom Launcher" main.py --target-architecture=universal2
+# py2applet --make-setup main.py
+# sed -i '' -e "s/)/    name='Toontown Rewritten Custom Launcher')/" setup.py
+# python3 setup.py py2app -O2 --arch=universal2 --resources resources --iconfile eyes.icns
+# cp -r compile_scripts/universal/PyQt6_*/PyQt6/Qt6/* "./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python$PYTHON_VERSION/PyQt6/Qt6/"
 # next we cleanup any qt files that are not needed
-python3 compile_scripts/cleanup.py
+# python3 compile_scripts/cleanup.py
 codesign --force --deep --sign - dist/Toontown\ Rewritten\ Custom\ Launcher.app/Contents/MacOS/*
 open dist
 
