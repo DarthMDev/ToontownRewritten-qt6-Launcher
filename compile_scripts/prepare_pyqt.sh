@@ -11,20 +11,5 @@ python3 -m pip download --only-binary=:all: --platform=macosx_13_0_arm64 PyQt6_W
 python3 -m wheel unpack PyQt6_*arm64*.whl -d arm64
 python3 -m wheel unpack PyQt6_*x86_64*.whl -d x86_64
 python3 -m wheel tags --platform-tag macosx_10_14_universal2 PyQt6_*x86_64.whl
-python3 -m wheel unpack PyQt6_*universal2.whl --dest universal
 
-# https://stackoverflow.com/a/46020381
-merge_frameworks() {
-  # $1 is the path to the binary
-  binary_path="${1##universal/}"
-  # lipo together the x86_64 and arm64 versions of the binary
-  lipo -create -arch x86_64 "x86_64/$binary_path" "arm64/$binary_path" -output "universal/$binary_path"
-}
-export -f merge_frameworks
 
-# Iterate through all the binaries in the universal wheel and merge them
-find universal -perm +111 -type f -exec sh -c 'merge_frameworks "$1"' _ {} \;
-python3 -m wheel pack universal/PyQt6_*
-
-# Finally, install our universal wheel
-python3 -m pip install PyQt6_*universal2.whl --force-reinstall

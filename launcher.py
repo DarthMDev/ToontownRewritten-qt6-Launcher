@@ -14,6 +14,7 @@ import os
 
 import http.client as httplib
 DEVMODE = settings.devmode
+MACOS_PATH = os.path.join(os.path.expanduser("~"), "Library", "Application Support", "Toontown Rewritten")
 class TTRLauncher(FSM):
     """
     This is the "main" class that powers the Toontown Rewritten launcher. It manages
@@ -230,14 +231,17 @@ class TTRLauncher(FSM):
         elif sys.platform == 'darwin':
             # open "Toontown Rewritten"
             if not DEVMODE:
+                # keep track of current path to get back to
+                currentPath = os.getcwd()
+                # change to the app support folder
+                os.chdir(MACOS_PATH)
                 # on mac if we aren't in dev mode, we need to use application support folder
-                path = os.path.join(os.path.expanduser("~"), "Library", "Application Support", "Toontown Rewritten")
-                modes = os.stat(path + "/" + 'Toontown Rewritten').st_mode
+                modes = os.stat('Toontown Rewritten').st_mode
                 if not modes & stat.S_IXUSR:
-                    os.chmod('Toontown Rewritten', modes | stat.S_IXUSR)
+                    os.chmod('./Toontown Rewritten', modes | stat.S_IXUSR)
             
             
-                game = subprocess.Popen([path + "/" + 'Toontown Rewritten'])
+                game = subprocess.Popen(['./Toontown Rewritten'])
             else:
                 # use the current directory
                 modes = os.stat('Toontown Rewritten').st_mode
@@ -252,9 +256,13 @@ class TTRLauncher(FSM):
         self.sendOutput(messagetypes.LAUNCHER_HIDE)
         while game.poll() is None:
             time.sleep(1.5)
-            os.system("/app/bin/wmclass") #Sets the WM_CLASS of Toontown Rewritten so that DE can show icon
+            # this is a hack to get the icon to show up on linux
+            if sys.platform in ['linux2', 'linux']:
+                os.system("/app/bin/wmclass") #Sets the WM_CLASS of Toontown Rewritten so that DE can show icon
 
         if game.returncode == 0:
+            # return back to the original path
+            os.chdir(currentPath)
             self.sendOutput(messagetypes.LAUNCHER_SHOW)
             self.sendOutput(messagetypes.LAUNCHER_ENABLE_CONTROLS)
             self.credentials = None

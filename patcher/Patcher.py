@@ -12,7 +12,6 @@ PATCHER_BASE = os.environ.get('PATCHER_BASE', './')
 # on mac use app support folder if we are not in dev mode
 if not DEVMODE and sys.platform == 'darwin':
     PATCHER_BASE = os.path.join(os.environ.get('HOME'), 'Library', 'Application Support', 'Toontown Rewritten')
-
 print('Obtaining available mirrors...')
 
 MIRRORS = []
