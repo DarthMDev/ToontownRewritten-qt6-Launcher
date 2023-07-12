@@ -8,12 +8,13 @@ allowlist/
 compile_scripts/PyQt6_arm64
 compile_scripts/PyQt6_x86_64
 compile_scripts/universal
+universal/
 __pycache__/
 .DS_Store
 crash.txt
 *.mf
 *.whl
-Toontown Rewritten
+./Toontown Rewritten
 TTRGame.vlt
 settings.json
 
