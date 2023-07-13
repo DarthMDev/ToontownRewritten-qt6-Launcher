@@ -60,6 +60,13 @@ def Patch(progressCallback=None, fileCallback=None):
             continue
         if fileCallback is not None:
             fileCallback('Updating file %s of %s\n(%s)' % (count, len(MANIFEST), filename))
+        # if the file is Toontown Rewritten executable (mac exclusive)
+        # then we need to check it against the version in the app bundle
+        # TTR.app/Contents/MacOS/Toontown Rewritten
+        if filename == 'Toontown Rewritten':
+            if not DEVMODE:
+                filename = os.path.join('TTR.app', 'Contents', 'MacOS', 'Toontown Rewritten')
+
         managedFile = ManagedFile(filename, installBase=PATCHER_BASE, hash=entry.get('hash'), dl=entry.get('dl'), compHash=entry.get('compHash'), progressCallback=progressCallback)
         managedFile.update(MIRRORS, patches=entry.get('patches'))
         files.append(managedFile)

@@ -205,6 +205,9 @@ class TTRLauncher(FSM):
         self.request('LoginResponse')
 
     def enterPatch(self):
+        # copy the TTR.app from root directory  to the app support folder and create the app if it doesn't exist
+        if sys.platform == 'darwin' and not DEVMODE:
+            os.system("ditto ./TTR.app ~/Library/Application\ Support/Toontown\ Rewritten/TTR.app")
         from patcher import Patcher
         self.patcher = threading.Thread(target=Patcher.Patch, name='Patcher-Thread', args=(self.__updateProgress, self.__updateFile))
         self.patcher.daemon = True
@@ -236,12 +239,13 @@ class TTRLauncher(FSM):
                 # change to the app support folder
                 os.chdir(MACOS_PATH)
                 # on mac if we aren't in dev mode, we need to use application support folder
-                modes = os.stat('Toontown Rewritten').st_mode
+                # also use the 
+                modes = os.stat('TTR.app/Contents/MacOS/Toontown Rewritten').st_mode
                 if not modes & stat.S_IXUSR:
-                    os.chmod('./Toontown Rewritten', modes | stat.S_IXUSR)
+                    os.chmod('./TTR.app/Contents/MacOS/Toontown Rewritten', modes | stat.S_IXUSR)
             
-            
-                game = subprocess.Popen(['./Toontown Rewritten'])
+               # open up the .app in the app support folder
+                game = subprocess.Popen(['./TTR.app/Contents/MacOS/Toontown Rewritten'])
             else:
                 # use the current directory
                 modes = os.stat('Toontown Rewritten').st_mode

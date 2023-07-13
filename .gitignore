@@ -5,6 +5,7 @@ venv/
 street-signs/
 logs
 allowlist/
+universal/
 compile_scripts/PyQt6_arm64
 compile_scripts/PyQt6_x86_64
 compile_scripts/universal
