@@ -206,8 +206,11 @@ class TTRLauncher(FSM):
 
     def enterPatch(self):
         # copy the TTR.app from root directory  to the app support folder and create the app if it doesn't exist
-        if sys.platform == 'darwin' and not DEVMODE:
-            os.system("ditto ./TTR.app ~/Library/Application\ Support/Toontown\ Rewritten/TTR.app")
+        # also check if ttr.app exists in resources folder
+        if sys.platform == 'darwin' and not DEVMODE and not os.path.exists("resources" + "/TTR.app"):
+            os.system("ditto resources/TTR.app ~/Library/Application\ Support/Toontown\ Rewritten/TTR.app")
+            # delete the old TTR.app we dont need it anymore
+            os.system("rm -rf TTR.app")
         from patcher import Patcher
         self.patcher = threading.Thread(target=Patcher.Patch, name='Patcher-Thread', args=(self.__updateProgress, self.__updateFile))
         self.patcher.daemon = True

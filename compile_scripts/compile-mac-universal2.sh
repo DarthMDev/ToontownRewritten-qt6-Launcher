@@ -9,11 +9,14 @@ python3 -m pip install -r ../requirements.txt py2app
 ./prepare_pyqt.sh
 cd ..
 py2applet --make-setup main.py
-sed -i '' -e "s/)/    name='Toontown Rewritten Custom Launcher')/" setup.py
+sed -i '' -e "s/)/    name='Toontown Rewritten Custom Launcher')/" setup.py 
+
 python3 setup.py py2app -O2 --arch=universal2 --resources resources --iconfile eyes.icns
 cp -r compile_scripts/universal/PyQt6_*/PyQt6/Qt6/* "./dist/Toontown Rewritten Custom Launcher.app/Contents/Resources/lib/python$PYTHON_VERSION/PyQt6/Qt6/"
 # next we cleanup any qt files that are not needed
 python3 compile_scripts/cleanup.py
 codesign --force --deep --sign - dist/Toontown\ Rewritten\ Custom\ Launcher.app/Contents/MacOS/*
+# cleanup the universal folder
+rm -rf universal/
 open dist
 
